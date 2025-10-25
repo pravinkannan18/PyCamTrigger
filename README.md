@@ -1,161 +1,115 @@
-# Android Camera WebApp
+# Android Camera WebApp - Multi-Connection Support
 
-A web application to control Android phone camera remotely using React (frontend) and Flask (backend).
+A web application to control Android phone camera remotely using React (frontend) and Flask (backend) with **multiple connection methods**.
 
-## Features
+## 🚀 Features
 
-- 📱 Connect to Android device via USB
+- 📱 **Multiple Connection Methods**: USB, WiFi, IP Webcam, scrcpy
 - 📷 Open Android camera remotely from web interface
 - 📸 Capture photos remotely with a button click
 - 🖼️ View captured photos in the web interface
 - 💾 Save photos to local computer
+- 🌐 Network-based connections (no USB required!)
 
-## Project Structure
+## 🔌 Connection Methods
 
-```
-android-camera-webapp/
-├── backend/
-│   ├── app.py                 # Flask API server
-│   ├── camera_controller.py   # Android camera control logic
-│   └── requirements.txt       # Python dependencies
-├── frontend/
-│   ├── public/
-│   │   └── index.html
-│   ├── src/
-│   │   ├── App.js            # Main React component
-│   │   ├── App.css           # Styles
-│   │   ├── index.js
-│   │   └── index.css
-│   ├── package.json
-│   └── .env
-└── captured_photos/           # Saved photos from camera
-```
+### 1. USB (ADB) - Traditional Method
+- ✅ Most reliable
+- ✅ Fastest transfer speeds
+- ❌ Requires USB cable
+- **Use case**: Direct control, best for development
 
-## Prerequisites
+### 2. WiFi (ADB)
+- ✅ Wireless after initial setup
+- ✅ Full ADB functionality
+- ⚠️ Requires USB for initial setup
+- **Use case**: Wireless control without additional apps
 
-1. **ADB (Android Debug Bridge)** - Install ADB on your computer
-   - Windows: Download from [Android Developer site](https://developer.android.com/tools/releases/platform-tools)
-   - Mac: `brew install android-platform-tools`
-   - Linux: `sudo apt-get install adb`
+### 3. IP Webcam App
+- ✅ No USB or ADB required
+- ✅ Easy setup with Android app
+- ✅ Live video streaming support
+- ✅ Works over any network
+- **Use case**: Easiest wireless solution, ideal for remote monitoring
 
-2. **Android Device Setup**
-   - Enable Developer Options (Settings > About Phone > Tap Build Number 7 times)
-   - Enable USB Debugging (Settings > Developer Options > USB Debugging)
-   - Connect device via USB cable
+### 4. scrcpy - Screen Mirroring
+- ✅ Full screen mirroring
+- ✅ Mouse and keyboard control
+- ✅ High performance
+- ⚠️ Requires ADB connection
+- **Use case**: Full device control and screen capture
 
-3. **Python 3.8+** installed
-4. **Node.js 14+** and npm installed
-
-## Installation
+## 📦 Quick Start
 
 ### Backend Setup
-
-1. Navigate to backend directory:
-   ```powershell
-   cd backend
-   ```
-
-2. Create a virtual environment (optional but recommended):
-   ```powershell
-   python -m venv venv
-   .\venv\Scripts\Activate.ps1
-   ```
-
-3. Install Python dependencies:
-   ```powershell
-   pip install -r requirements.txt
-   ```
-
-### Frontend Setup
-
-1. Navigate to frontend directory:
-   ```powershell
-   cd frontend
-   ```
-
-2. Install npm dependencies:
-   ```powershell
-   npm install
-   ```
-
-## Running the Application
-
-### 1. Start the Backend Server
-
 ```powershell
 cd backend
+pip install -r requirements.txt
 python app.py
 ```
 
-The Flask server will start on `http://localhost:5000`
-
-### 2. Start the Frontend Development Server
-
-In a new terminal:
-
+### Frontend Setup
 ```powershell
 cd frontend
+npm install
 npm start
 ```
 
-The React app will start on `http://localhost:3000`
+Open `http://localhost:3000` in your browser!
 
-### 3. Connect Your Android Device
+## 📱 Setup Instructions by Connection Method
 
-1. Connect your Android phone via USB
-2. Make sure USB debugging is enabled
-3. Accept the USB debugging prompt on your phone
-4. Verify connection by running: `adb devices`
+### Method 1: USB (ADB)
+1. Enable USB Debugging on Android
+2. Connect via USB cable
+3. Select "USB (ADB)" in web app
+4. Click "Start Camera" → "Capture Photo"
 
-## Usage
+### Method 2: WiFi (ADB)
+1. Connect USB first and run: `adb tcpip 5555`
+2. Find device IP: Settings → About → Status
+3. Select "WiFi (ADB)" in web app
+4. Enter IP address and connect
+5. Disconnect USB cable (optional)
 
-1. Open your browser to `http://localhost:3000`
-2. Check if your device is connected (green status indicator)
-3. Click **"Start Camera"** button to open the camera app on your phone
-4. Click **"Capture Photo"** button to take a picture
-5. The captured photo will be displayed in the web interface
-6. Photos are saved in the `captured_photos/` directory
+### Method 3: IP Webcam App
+1. Install "IP Webcam" from Play Store
+2. Open app and tap "Start server"
+3. Note the IP address shown
+4. Select "IP Webcam" in web app
+5. Enter IP and port 8080
 
-## API Endpoints
+### Method 4: scrcpy
+1. Install scrcpy from [GitHub](https://github.com/Genymobile/scrcpy)
+2. Connect via USB or ADB WiFi
+3. Select "scrcpy" in web app
+4. Enjoy full screen mirroring!
 
-- `GET /api/health` - Health check
-- `GET /api/check-device` - Check if Android device is connected
-- `POST /api/open-camera` - Open camera app on Android device
-- `POST /api/capture-photo` - Capture a photo
-- `GET /api/photos` - Get list of captured photos
-- `GET /api/photos/<filename>` - Get a specific photo
+## 📊 Comparison Table
 
-## Troubleshooting
+| Feature | USB (ADB) | WiFi (ADB) | IP Webcam | scrcpy |
+|---------|-----------|------------|-----------|--------|
+| Setup | Easy | Medium | Easy | Medium |
+| USB Required | Always | Initial | Never | Initial |
+| Speed | Fastest | Fast | Moderate | Fast |
+| Video Stream | ❌ | ❌ | ✅ | ✅ |
+| Best For | Development | Wireless | Monitoring | Full Control |
 
-### Device Not Detected
-- Make sure USB debugging is enabled
-- Try different USB cable or port
-- Run `adb devices` in terminal to verify connection
-- Revoke USB debugging authorizations and reconnect
+## 🔧 Troubleshooting
 
-### Camera Won't Open
-- Grant camera permissions on your phone
-- Make sure no other app is using the camera
-- Restart ADB: `adb kill-server` then `adb start-server`
+### ADB Issues
+```powershell
+adb kill-server
+adb start-server
+adb devices
+```
 
-### Backend Connection Error
-- Verify Flask server is running on port 5000
+### IP Webcam Issues
+- Ensure same WiFi network
 - Check firewall settings
-- Ensure CORS is properly configured
+- Verify IP address
 
-## Technologies Used
+For detailed documentation, see the full README sections above.
 
-- **Frontend**: React.js, Axios, CSS3
-- **Backend**: Flask, Flask-CORS
-- **Device Control**: ADB (Android Debug Bridge)
-- **Communication**: REST API
-
-## License
-
+## 📄 License
 MIT License
-
-## Notes
-
-- This application requires a physical connection via USB
-- Make sure your Android device has sufficient permissions
-- Photos are captured using ADB commands and transferred to your computer
