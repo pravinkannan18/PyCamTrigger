@@ -32,6 +32,7 @@ yarn-error.log*
 Thumbs.db
 
 # Captured photos (optional - remove if you want to track photos)
-# captured_photos/*.jpg
-# captured_photos/*.jpeg
-# captured_photos/*.png
+captured_photos/
+ captured_photos/*.jpg
+ captured_photos/*.jpeg
+captured_photos/*.png
